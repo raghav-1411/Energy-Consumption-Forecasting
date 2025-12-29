@@ -21,9 +21,6 @@ The project demonstrates a **professional end-to-end ML pipeline**, covering dat
 - **Source:** UCI Machine Learning Repository  
 - **Link:** https://archive.ics.uci.edu/dataset/374/appliances+energy+prediction  
 
-⚠️ **Dataset not included** in this repository due to large size.  
-Please download it manually and place it in the project directory before running the notebook.
-
 ---
 
 ## 🔍 Exploratory Data Analysis (EDA)
