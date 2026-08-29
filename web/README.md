@@ -1,5 +1,7 @@
 # Frontend — Energy Consumption Forecasting
 
+**Live: <https://raghav-energy-forecast.vercel.app>**
+
 A static showcase site for the forecasting project. Zero dependencies, zero build step —
 plain HTML, CSS and JavaScript with hand-rolled SVG charts.
 

@@ -1,5 +1,11 @@
 # ⚡ Energy Consumption Forecasting using Machine Learning
 
+**🔗 Live demo — [raghav-energy-forecast.vercel.app](https://raghav-energy-forecast.vercel.app)**
+
+An interactive walkthrough of the results: held-out predictions, the model
+benchmark, and every figure from the notebook. No setup required.
+
+
 ## 📌 Project Overview
 This project focuses on forecasting **household electricity consumption** using **machine learning–based time-series modeling**. The objective is to accurately predict **hourly Global Active Power (kW)** from historical household electrical measurements.
 
@@ -133,6 +139,39 @@ All features were standardized using **StandardScaler**.
 ---
 
 ## ▶️ How to Run the Project
-1. Install dependencies:
+
+1. **Install dependencies**
+
    ```bash
    pip install pandas numpy matplotlib seaborn scikit-learn xgboost catboost joblib
+   ```
+
+2. **Get the dataset**
+
+   Download the Household Electric Power Consumption data from the
+   [UCI repository](https://archive.ics.uci.edu/dataset/374/appliances+energy+prediction)
+   and place `household_power_consumption.txt` beside `main.ipynb` — the notebook reads
+   that filename from the working directory.
+
+3. **Run the notebook**
+
+   Open `main.ipynb` and run all cells. Training all seven models takes a few minutes.
+
+---
+
+## 🌐 Frontend
+
+The [`web/`](web/) folder holds the static site behind the live demo — plain HTML, CSS and
+JavaScript with no build step and no dependencies.
+
+```bash
+python3 -m http.server 8000 --directory web
+```
+
+Then open <http://localhost:8000>.
+
+Every metric on the page lives in [`web/data.js`](web/data.js), transcribed from the
+executed notebook outputs, so re-running the notebook and updating that one file keeps the
+site in step with the results. Deployed on Vercel, which republishes on every push to
+`main`. See [`web/README.md`](web/README.md) for details.
+
