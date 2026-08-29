@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Energy Consumption Forecasting — ML Time-Series Project</title>
+<meta name="description" content="Forecasting hourly household electricity demand with 84 engineered time-series features and seven benchmarked regression models.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>
+  /* Resolve the theme before first paint so there is no flash of the wrong palette. */
+  (function () {
+    try {
+      var saved = localStorage.getItem("ef-theme");
+      var t = saved || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  })();
+</script>
+</head>
+<body>
+
+<div class="grid-bg" aria-hidden="true"></div>
+<div class="glow glow-a" aria-hidden="true"></div>
+<div class="glow glow-b" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark">⚡</span>
+      <span class="brand-text">Energy<span class="dim">Forecast</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#results">Results</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#features">Features</a>
+      <a href="#models">Models</a>
+      <a href="#gallery">Analysis</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch colour theme" title="Switch theme">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.3A8.5 8.5 0 0 1 9.7 3.5a8.5 8.5 0 1 0 10.8 10.8Z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M21.4 12h-2.2M4.8 12H2.6M18.6 5.4l-1.6 1.6M7 17l-1.6 1.6M18.6 18.6 17 17M7 7 5.4 5.4"/></svg>
+    </button>
+    <a class="btn btn-ghost nav-cta" id="repoLinkNav" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      Source
+    </a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ─────────────── HERO ─────────────── -->
+  <section class="hero wrap">
+    <div class="pill">
+      <span class="dot"></span>
+      Time-series regression · UCI household power dataset
+    </div>
+
+    <h1>
+      Forecasting household<br class="br-lg">
+      electricity demand,<br class="br-lg">
+      <span class="grad">one hour ahead.</span>
+    </h1>
+
+    <p class="lede">
+      An end-to-end machine learning pipeline that turns 162,495 raw minute-level meter
+      readings into an hourly load forecast — 84 engineered temporal features, seven
+      benchmarked models, and a held-out future window the models never saw during training.
+    </p>
+
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#results">See the results</a>
+      <a class="btn btn-ghost" id="repoLinkHero" href="#" target="_blank" rel="noopener">View on GitHub</a>
+    </div>
+
+    <div class="stat-row" id="heroStats"></div>
+  </section>
+
+  <!-- ─────────────── RESULTS ─────────────── -->
+  <section class="section wrap" id="results">
+    <div class="sec-head">
+      <span class="eyebrow">01 — Held-out performance</span>
+      <h2>Predicted load tracks actual load almost exactly</h2>
+      <p class="sec-sub">
+        The test set is the final 15% of the timeline, split chronologically — the model
+        trains on the past and is scored purely on future hours. Below are the opening and
+        closing hours of that window, straight from the winning model.
+      </p>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-head">
+        <div>
+          <h3>Actual vs predicted — Global Active Power</h3>
+          <p class="chart-note">Ridge Regression · 40 hours sampled from the 356-hour test set</p>
+        </div>
+        <div class="legend">
+          <span class="lg"><i class="sw sw-actual"></i>Actual</span>
+          <span class="lg"><i class="sw sw-pred"></i>Predicted</span>
+        </div>
+      </div>
+      <div class="chart-body" id="lineChart"></div>
+      <div class="chart-foot" id="lineFoot"></div>
+    </div>
+
+    <div class="split">
+      <div class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>Residuals</h3>
+            <p class="chart-note">Prediction error per hour, in kilowatts</p>
+          </div>
+        </div>
+        <div class="chart-body chart-body-sm" id="residChart"></div>
+      </div>
+
+      <div class="card err-card">
+        <h3>Error profile</h3>
+        <ul class="err-list" id="errList"></ul>
+        <p class="err-note">
+          The largest single-hour miss across the sampled window is
+          <strong id="maxErr"></strong> — on a signal that swings between
+          0.34&nbsp;kW and 5.02&nbsp;kW.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── PIPELINE ─────────────── -->
+  <section class="section wrap" id="pipeline">
+    <div class="sec-head">
+      <span class="eyebrow">02 — How it works</span>
+      <h2>From raw meter text to a scored forecast</h2>
+      <p class="sec-sub">Five stages, each one reducing noise and adding signal.</p>
+    </div>
+    <ol class="pipeline" id="pipelineList"></ol>
+  </section>
+
+  <!-- ─────────────── FEATURES ─────────────── -->
+  <section class="section wrap" id="features">
+    <div class="sec-head">
+      <span class="eyebrow">03 — Feature engineering</span>
+      <h2>84 features that teach the model how time behaves</h2>
+      <p class="sec-sub">
+        Electricity demand is driven by memory and rhythm — what happened an hour ago,
+        yesterday, last week, and where you are in the day. Each family below encodes one
+        of those.
+      </p>
+    </div>
+    <div class="feat-grid" id="featGrid"></div>
+  </section>
+
+  <!-- ─────────────── MODELS ─────────────── -->
+  <section class="section wrap" id="models">
+    <div class="sec-head">
+      <span class="eyebrow">04 — Benchmark</span>
+      <h2>Seven models, one leaderboard</h2>
+      <p class="sec-sub">
+        Linear baselines, tree ensembles, gradient boosting and a stacked blend — all
+        trained on identical scaled features and scored on the same future hours.
+      </p>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-head">
+        <div>
+          <h3>Accuracy leaderboard</h3>
+          <p class="chart-note">100 − MAPE on the held-out test set · axis starts at 82%, not 0, so the leading models stay distinguishable</p>
+        </div>
+      </div>
+      <div class="bars" id="barChart"></div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="tbl" id="modelTable">
+        <thead>
+          <tr>
+            <th>Model</th><th>MAE</th><th>RMSE</th><th>R²</th><th>MAPE</th><th>Accuracy</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <span class="callout-icon">◆</span>
+      <div>
+        <strong>Why the linear model wins.</strong>
+        With strong lag and rolling features, next-hour load becomes an almost linear
+        function of its own recent history. Ridge exploits that structure directly and
+        without variance, while the tree ensembles spend capacity approximating a
+        relationship the linear model already captures exactly.
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── GALLERY ─────────────── -->
+  <section class="section wrap" id="gallery">
+    <div class="sec-head">
+      <span class="eyebrow">05 — Analysis</span>
+      <h2>Figures from the notebook</h2>
+      <p class="sec-sub">Exploratory analysis and diagnostics generated during the run. Click any figure to enlarge.</p>
+    </div>
+    <div class="gal" id="galGrid"></div>
+  </section>
+
+  <!-- ─────────────── STACK ─────────────── -->
+  <section class="section wrap" id="stack">
+    <div class="sec-head">
+      <span class="eyebrow">06 — Built with</span>
+      <h2>Tech stack</h2>
+    </div>
+    <div class="stack-grid" id="stackGrid"></div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div>
+      <div class="brand"><span class="brand-mark">⚡</span><span class="brand-text">Energy<span class="dim">Forecast</span></span></div>
+      <p class="foot-note">Household Electric Power Consumption dataset — UCI Machine Learning Repository.</p>
+    </div>
+    <div class="foot-links">
+      <a id="repoLinkFoot" href="#" target="_blank" rel="noopener">GitHub repository</a>
+      <a href="https://archive.ics.uci.edu/dataset/374/appliances+energy+prediction" target="_blank" rel="noopener">Dataset source</a>
+    </div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Figure viewer" hidden>
+  <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+  <figure class="lb-fig">
+    <img id="lbImg" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
