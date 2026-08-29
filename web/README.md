@@ -30,15 +30,23 @@ Re-run the notebook, update `data.js`, and the site reflects the new run.
 
 ## Deploying
 
-GitHub Pages' branch deployment only offers the repository **root** or **`/docs`** — it
-cannot serve an arbitrary folder such as `web/`. So there are two routes:
+Deployed on **Vercel** via the Git integration — every push to `main` publishes, and each
+pull request gets its own preview URL.
 
-**A — GitHub Actions (keeps this folder where it is).** Add a workflow that uploads `web/`
-as the Pages artifact, then set Settings → Pages → Source to *GitHub Actions*. Redeploys on
-every push to `main`.
+The one setting that matters is **Root Directory = `web`** in the Vercel project settings.
+Without it Vercel serves the repository root, where there is no `index.html`, and the
+deployment 404s.
 
-**B — Rename to `docs/`.** `git mv web docs`, then Settings → Pages → deploy from branch
-`main`, folder `/docs`. No CI, but the folder name is fixed by GitHub.
+| Setting | Value |
+|---|---|
+| Framework Preset | Other |
+| Root Directory | `web` |
+| Build Command | *(none)* |
+| Output Directory | *(none)* |
+| Install Command | *(none)* |
 
-Any static host works too — Netlify or Vercel with publish directory `web` and no build
-command.
+There is deliberately no `vercel.json`. The site is plain static files, and Vercel's default
+ETag revalidation already handles them correctly — pinning long cache lifetimes here would
+only risk serving stale figures after the notebook is re-run.
+
+Any other static host works the same way: serve the `web` folder, no build step.
